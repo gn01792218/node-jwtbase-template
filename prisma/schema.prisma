@@ -18,8 +18,6 @@ model User {
   email String @unique
   password String
   provider String@default("email")
-  vocabularys Vocabulary[]
-  noteGroups NoteGroup[]
   roles Role[]
   refreshToken RefreshToken?
 }
@@ -35,36 +33,3 @@ model RefreshToken{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int@unique
 }
-model NoteGroup{
-  id Int @id@default(autoincrement())
-  title String
-  vocabularys Vocabulary[]
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int@unique
-}
-model Vocabulary {
-  id Int @id@default(autoincrement())
-  spelling String
-  pronunciation String
-  definitionMissCount Int@default(0)
-  spellMissCount Int@default(0)
-  examples Example[]
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int@unique
-  noteGroup NoteGroup[]
-  noteGroupIds Int[] 
-}
-model Example {
-  id Int @id@default(autoincrement())
-  definition String
-  sentence Sentence[]
-  vocabulary Vocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade) 
-  vocabularyId Int@unique
-}
-model Sentence {
-  id Int @id@default(autoincrement())
-  en String
-  example Example @relation(fields: [exampleId], references: [id], onDelete: Cascade) 
-  exampleId Int@unique
-}
-
